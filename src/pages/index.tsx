@@ -1,5 +1,3 @@
-
-
 import { Typography } from '@mui/material'
 // import hello from './api/hello'
 // ^ don't need to be importing here at all, just call the route dummy
@@ -10,11 +8,7 @@ interface HomePageProps {
 }
 
 export default function Home({ message }: HomePageProps) {
-  // hello()
-  // const x = await fetch('/api/hello') // < would cause api call to this
-  // route.
-
-  fetch('http://localhost:3001/api/hello')
+  fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/hello')
     .then(async(x) => {
       const data =  await x.json()
       
@@ -24,13 +18,10 @@ export default function Home({ message }: HomePageProps) {
       console.log({ e })
     })
 
-  // console.log(x)
-
   return (
     <main>
       <Typography variant='h1'>Movie Mongo Bash</Typography>
       <Typography>{message}</Typography>
-      <Typography>Endpoint: {process.env.NEXT_PUBLIC_ENDPOINT}</Typography>
     </main>
   )
 }
