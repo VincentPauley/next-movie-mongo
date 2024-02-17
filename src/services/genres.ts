@@ -1,5 +1,5 @@
 interface GenreRecord {
-  id: string;
+  _id: string;
   name: string;
   level: number;
 }

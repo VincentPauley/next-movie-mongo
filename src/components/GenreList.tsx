@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { GetGenres } from '@/services/genres'
 
 import FormGroup from '@mui/material/FormGroup';
@@ -14,8 +14,8 @@ export default function GenreList() {
   
   return (
     <FormGroup>{
-        genres?.data.map(d => {
-          return <FormControlLabel control={<Switch/>} label={d.name}/>
+        genres?.data.map(genre => {
+          return <FormControlLabel key={genre._id} control={<Switch/>} label={genre.name + ' ' + genre.level}/>
         })  
       }
     </FormGroup>
