@@ -1,8 +1,3 @@
-import { Typography } from '@mui/material'
-// import hello from './api/hello'
-// ^ don't need to be importing here at all, just call the route dummy
-// hello < test that with env stuff.
-
 const genres = [
   {"name":"Drama","level":1},
   {"name":"Christmas","level":2},
@@ -44,47 +39,21 @@ const genres = [
   {"name":"Light-Hearted","level":3},
 ]
 
-interface HomePageProps {
-  message: string
-}
+genres.forEach(genre => {
+  // console.log('---')
+  // console.log(genre)
 
-export default function Home({ message }: HomePageProps) {
-  // fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/hello')
-  //   .then(async(x) => {
-  //     const data =  await x.json()
-  //     console.log(data)
-  //   })
-  //   .catch(e => {
-  //     console.log({ e })
-  //   })
+  const { name, level } = genre
 
-  // POST works find
-  // fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/genres', { method: 'POST', body: JSON.stringify({ name, level }) })
-  // .then(async(x) => {
-  //   const data =  await x.json()
-  //   console.log('response from POST?', data)
-  // })
-  // .catch(e => {
-  //   console.log({ e })
-  // })
-  
-  fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/genres')
+    // POST works find
+  fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/genres', { method: 'POST', body: JSON.stringify({ name, level }) })
     .then(async(x) => {
       const data =  await x.json()
-      console.log('response from GET genres?', data)
+      console.log('response from POST?', data)
     })
     .catch(e => {
       console.log({ e })
     })
+})
 
-  return (
-    <main>
-      <Typography variant='h1'>Movie Mongo Bash</Typography>
-      <Typography>{message}</Typography>
-    </main>
-  )
-}
 
-export async function getServerSideProps() {
-  return { props: { message: 'Hello Vinnie' } }
-}
