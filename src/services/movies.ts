@@ -22,3 +22,14 @@ export const GetMovies = () => {
     resolve(records)
   })
 }
+
+export const GetMovie = (movieId: string) => {
+
+  console.log('movieId: ', movieId)
+  return new Promise<{ data: MovieRecord }>(async(resolve, reject) => {
+    const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/' + movieId)
+    const record = await response.json()
+
+    resolve(record)
+  })
+}
