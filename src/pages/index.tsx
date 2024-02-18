@@ -7,6 +7,7 @@ import { Typography } from '@mui/material'
 // ^ don't need to be importing here at all, just call the route dummy
 // hello < test that with env stuff.
 import GenreList from '@/components/GenreList'
+import MovieList from '@/components/MovieList'
 
 // NOTE: gets the data how I want it to be inserted...
 // import movieJSON from '@/services/movie-data'
@@ -32,14 +33,6 @@ interface HomePageProps {
 }
 
 export default function Home({ message }: HomePageProps) {
-  // fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/hello')
-  //   .then(async(x) => {
-  //     const data =  await x.json()
-  //     console.log(data)
-  //   })
-  //   .catch(e => {
-  //     console.log({ e })
-  //   })
 
   // fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movies', { method: 'POST', body: JSON.stringify(record) })
   //     .then(async(x) => {
@@ -64,6 +57,7 @@ export default function Home({ message }: HomePageProps) {
       <QueryClientProvider client={queryClient}>
         <Typography variant='h1'>Movie Mongo Bash</Typography>
         <Typography>{message}</Typography>
+        <MovieList/>
         <GenreList/>
       </QueryClientProvider>
     </main>

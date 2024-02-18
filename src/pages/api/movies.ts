@@ -31,9 +31,15 @@ export default async function handler(
         res.json({ message: 'Created: ' + result.id })
       }
     }
+
+    if (req.method === 'GET') {
+      const records = await Movie.find({})
+
+      res.json({ data: records })
+    }
   } catch (e) {
     console.log(e)
-    res.status(500).json({ message: 'Server could not save movie document' })
+    res.status(500).json({ message: 'Could not perform' })
   }
   
 
