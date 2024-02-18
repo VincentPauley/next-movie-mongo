@@ -54,11 +54,11 @@ export default function Home({ message }: HomePageProps) {
 
   return (
     <main>
-      <QueryClientProvider client={queryClient}>
+      {/* <QueryClientProvider client={queryClient}> */}
         <Typography variant='h1'>Movies</Typography>
         <MovieList/>
         <GenreList/>
-      </QueryClientProvider>
+      {/* </QueryClientProvider> */}
     </main>
   )
 }

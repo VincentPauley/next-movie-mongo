@@ -9,6 +9,16 @@ export default function MovieList() {
   return (
     <div>
       <h2>Total Movies:</h2>
+      {/*
+      
+      TODOS:
+      - movie movie list to a route
+      - get pagination working
+      - single movie page (folder with index)
+      - delete movie
+      - check docker setup for cleaner future, export db and store it.
+      
+      */}
 
       <Chip label={movies?.data?.totalRecords} />
       <ul style={{padding: '1rem'}}>
