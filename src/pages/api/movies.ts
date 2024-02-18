@@ -32,10 +32,17 @@ export default async function handler(
       }
     }
 
+    // this is going to need params to 
     if (req.method === 'GET') {
-      const records = await Movie.find({})
+      const recordSet = await Movie.find({}).limit(20)
+      const totalRecords = await Movie.countDocuments()
 
-      res.json({ data: records })
+      res.json({
+        data: {
+          totalRecords,
+          recordSet,
+        }
+      })
     }
   } catch (e) {
     console.log(e)

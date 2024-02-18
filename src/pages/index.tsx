@@ -55,8 +55,7 @@ export default function Home({ message }: HomePageProps) {
   return (
     <main>
       <QueryClientProvider client={queryClient}>
-        <Typography variant='h1'>Movie Mongo Bash</Typography>
-        <Typography>{message}</Typography>
+        <Typography variant='h1'>Movies</Typography>
         <MovieList/>
         <GenreList/>
       </QueryClientProvider>
