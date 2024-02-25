@@ -3,6 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '@/lib/dbConnect'
 import Movie from '@/models/Movie'
 
+const RECORDS_PER_PAGE = 20
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -34,13 +36,14 @@ export default async function handler(
 
     // this is going to need params to 
     if (req.method === 'GET') {
-      const recordSet = await Movie.find({}).limit(20)
+      const recordSet = await Movie.find({}).sort({ _id: -1 }).limit(RECORDS_PER_PAGE)
       const totalRecords = await Movie.countDocuments()
 
       res.json({
         data: {
           totalRecords,
           recordSet,
+          pages: Math.ceil(totalRecords / RECORDS_PER_PAGE) 
         }
       })
     }
@@ -48,14 +51,4 @@ export default async function handler(
     console.log(e)
     res.status(500).json({ message: 'Could not perform' })
   }
-  
-
-  // if (req.method === 'GET') {
-  //   const result = await Genre.find({})
-
-  //   res.json({ data: result })
-  //   // RUN FIND
-  // }
-
-  // res.status(200).json({ teams })
 }

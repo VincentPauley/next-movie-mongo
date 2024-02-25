@@ -15,7 +15,7 @@ interface MovieRecord {
 }
 
 export const GetMovies = () => {
-  return new Promise<{ data:{ recordSet: MovieRecord[], totalRecords: number} }>(async(resolve, reject) => {
+  return new Promise<{ data:{ recordSet: MovieRecord[], totalRecords: number, pages: number} }>(async(resolve, reject) => {
     const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movies')
     const records = await response.json()
 
