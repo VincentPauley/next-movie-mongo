@@ -36,7 +36,13 @@ export default async function handler(
 
     // this is going to need params to 
     if (req.method === 'GET') {
-      const recordSet = await Movie.find({}).sort({ _id: -1 }).limit(RECORDS_PER_PAGE)
+      const { page } = req.query
+
+      const pageNumber = parseInt(page as string)
+
+      // console.log('Start @: ', pageNumber * RECORDS_PER_PAGE)
+
+      const recordSet = await Movie.find({}).sort({ _id: -1 }).skip(pageNumber * RECORDS_PER_PAGE).limit(RECORDS_PER_PAGE)
       const totalRecords = await Movie.countDocuments()
 
       res.json({

@@ -9,11 +9,21 @@ export default function MovieList() {
   const [activePageIndex, setActivePageIndex] = useState(0)
   // ^ now use this value to pass to paginate API
 
-
-  const { data: movies, isError, isLoading } = useQuery({ queryKey: ['movies'], queryFn: GetMovies });
+  const { data: movies, isError, isLoading } = useQuery({ 
+    queryKey: ['movies', activePageIndex],
+    queryFn: () => GetMovies(activePageIndex)
+  });
 
   const handlePageChange = (pageNumber: number): void => {
     setActivePageIndex(pageNumber -1)
+  }
+
+  if (isError) {
+    return <div>Error</div>
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>
   }
 
   return (
@@ -33,6 +43,7 @@ export default function MovieList() {
 
       <Chip label={movies?.data?.totalRecords} />
       <p>Active Page: {activePageIndex}</p>
+
       <ul style={{padding: '1rem'}}>
         {movies?.data?.recordSet?.map(record => {
           return (
@@ -51,7 +62,7 @@ export default function MovieList() {
         })}
       </ul>
       <Box p={4} sx={{display: 'flex', justifyContent: 'space-around'}}>
-        <Pagination count={movies?.data?.pages} onChange={(e, value) => handlePageChange(value)} />
+        <Pagination count={movies?.data?.pages} defaultValue={activePageIndex} onChange={(e, value) => handlePageChange(value)} />
       </Box>
     </div>
   );
