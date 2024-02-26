@@ -33,16 +33,15 @@ export default function MovieList() {
       
       TODOS:
         [X] - movie movie list to a route
-        [ ] - get pagination working
+        [X] - get pagination working
         [X] - single movie page (folder with index)
         [X] - single movie lookup and project on the global route
+        [ ] - movie search & filter
         [ ] - delete movie
         [ ] - check docker setup for cleaner future, export db and store it.
-        [ ] - movie search & filter
       */}
 
       <Chip label={movies?.data?.totalRecords} />
-      <p>Active Page: {activePageIndex}</p>
 
       <ul style={{padding: '1rem'}}>
         {movies?.data?.recordSet?.map(record => {
@@ -62,7 +61,12 @@ export default function MovieList() {
         })}
       </ul>
       <Box p={4} sx={{display: 'flex', justifyContent: 'space-around'}}>
-        <Pagination count={movies?.data?.pages} defaultValue={activePageIndex} onChange={(e, value) => handlePageChange(value)} />
+        <Pagination
+          count={movies?.data?.pages}
+          shape="rounded"
+          page={activePageIndex + 1}
+          onChange={(e, value) => handlePageChange(value)}
+        />
       </Box>
     </div>
   );
