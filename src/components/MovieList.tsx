@@ -9,10 +9,11 @@ import MovieTitleFilter from './MovieTitleFilter'
 
 export default function MovieList() {
   const [activePageIndex, setActivePageIndex] = useState(0)
+  const [searchString, setSearchString] = useState('')
 
   const { data: movies, isError, isLoading } = useQuery({ 
-    queryKey: ['movies', activePageIndex],
-    queryFn: () => GetMovies(activePageIndex)
+    queryKey: ['movies', activePageIndex, searchString],
+    queryFn: () => GetMovies(activePageIndex, searchString)
   });
 
   const handlePageChange = (pageNumber: number): void => {
@@ -20,7 +21,7 @@ export default function MovieList() {
   }
 
   const handleSearchSubmission = (search: string) => {
-    console.log('handleSearchSubmission: ', search)
+    setSearchString(search)
   }
 
   if (isError) {
@@ -41,7 +42,7 @@ export default function MovieList() {
         [X] - get pagination working
         [X] - single movie page (folder with index)
         [X] - single movie lookup and project on the global route
-        [ ] - movie search & filter
+        [X] - movie search & filter
         [ ] - delete movie
         [ ] - check docker setup for cleaner future, export db and store it.
       */}
