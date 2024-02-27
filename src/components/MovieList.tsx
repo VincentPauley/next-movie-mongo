@@ -5,9 +5,10 @@ import { useState } from 'react'
 
 import { Box, Button, Card, CardActions, CardContent, Chip, Pagination, Typography } from '@mui/material'
 
+import MovieTitleFilter from './MovieTitleFilter'
+
 export default function MovieList() {
   const [activePageIndex, setActivePageIndex] = useState(0)
-  // ^ now use this value to pass to paginate API
 
   const { data: movies, isError, isLoading } = useQuery({ 
     queryKey: ['movies', activePageIndex],
@@ -16,6 +17,10 @@ export default function MovieList() {
 
   const handlePageChange = (pageNumber: number): void => {
     setActivePageIndex(pageNumber -1)
+  }
+
+  const handleSearchSubmission = (search: string) => {
+    console.log('handleSearchSubmission: ', search)
   }
 
   if (isError) {
@@ -43,6 +48,7 @@ export default function MovieList() {
 
       <Chip label={movies?.data?.totalRecords} />
 
+      <MovieTitleFilter emitSearch={handleSearchSubmission}/>
       <ul style={{padding: '1rem'}}>
         {movies?.data?.recordSet?.map(record => {
           return (
@@ -50,6 +56,13 @@ export default function MovieList() {
               <CardContent>
                 <Typography variant="h5">{record.title}</Typography>
                 <Typography variant="subtitle1">{record.year} {record.rated}</Typography>
+                {record.ratings.length ? (
+
+                  record.ratings.map(rating => {
+                    return <div key={record._id + rating.reviewer}>{rating.reviewer} : <Chip label={rating.rating} /></div>
+                  })
+                  // <div>Ratings: {record.ratings.length}</div>
+                ) : null}
                 <CardActions>
                   <Link href={`/movies/${record._id}`}>
                     <Button>Inspect</Button>
