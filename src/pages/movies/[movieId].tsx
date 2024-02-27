@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
-import { useQuery } from '@tanstack/react-query'
-import { GetMovie } from '@/services/movies'
-import { Typography } from '@mui/material'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { GetMovie, DeleteMovie } from '@/services/movies'
+import { Box, Button, Container, Typography } from '@mui/material'
 
 export default function SingleMoviePage() {
   const router = useRouter()
@@ -10,7 +10,10 @@ export default function SingleMoviePage() {
 
   const { data: movie, isError, isLoading } = useQuery({ queryKey: ['movie', movieId], queryFn: () => GetMovie(movieId) });
 
-  console.log({movie})
+  // DeleteMovie
+  const deleteMovie: any = useMutation({
+    mutationFn: () => DeleteMovie(movieId)
+  });
 
   if (isError) {
     return <div>Error finding title...</div>
@@ -20,7 +23,16 @@ export default function SingleMoviePage() {
     return <div>Loading Title...</div>
   }
 
-  return <div>{
-    movie?.data && <Typography variant="h3">{movie?.data?.title}, {movie?.data?.year} </Typography>
-  }</div>
+  return (
+    <Container>{
+      movie?.data && <Typography variant="h3">{movie?.data?.title}, {movie?.data?.year} </Typography>
+    }
+
+    <Box sx={{border: '1px solid black', padding: '1rem', marginTop: '1rem'}}>
+      <Typography variant="h5" sx={{ marginBottom: '1rem'}}>Movie Actions</Typography>
+      <Button color="error" variant="outlined" onClick={() => deleteMovie.mutate()}>Delete</Button>
+    </Box>
+    
+    
+    </Container>)
 }

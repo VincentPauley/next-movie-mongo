@@ -24,12 +24,23 @@ export const GetMovies = (pageNumber = 0, searchString = '') => {
 }
 
 export const GetMovie = (movieId: string) => {
-
-  console.log('movieId: ', movieId)
   return new Promise<{ data: MovieRecord }>(async(resolve, reject) => {
     const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/' + movieId)
     const record = await response.json()
 
     resolve(record)
+  })
+}
+
+export const DeleteMovie = (movieId: string) => {
+  return new Promise<any>(async(resolve, reject) => {
+    const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/' + movieId, { method: "DELETE", headers: {
+      'Content-Type': 'application/json',
+    }, body: JSON.stringify({ id: movieId }) })
+    
+    console.log({ response })
+    const result = await response.json()
+
+    resolve(result)
   })
 }
