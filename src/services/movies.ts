@@ -38,9 +38,16 @@ export const DeleteMovie = (movieId: string) => {
       'Content-Type': 'application/json',
     }, body: JSON.stringify({ id: movieId }) })
     
-    console.log({ response })
     const result = await response.json()
 
     resolve(result)
+  })
+}
+
+export const ExportMovies = () => {
+  return new Promise(async(resolve, reject) => {
+    const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/export-collection')
+    const records = await response.json()
+    resolve(records)
   })
 }

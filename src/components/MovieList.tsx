@@ -43,8 +43,8 @@ export default function MovieList() {
         [X] - single movie page (folder with index)
         [X] - single movie lookup and project on the global route
         [X] - movie search & filter
-        [ ] - delete movie
-        [ ] - check docker setup for cleaner future, export db and store it.
+        [X] - delete movie
+        [ ] - Create exports for collection to ensure progress can be saved...
       */}
 
       <Chip label={movies?.data?.totalRecords} />
@@ -62,7 +62,6 @@ export default function MovieList() {
                   record.ratings.map(rating => {
                     return <div key={record._id + rating.reviewer}>{rating.reviewer} : <Chip label={rating.rating} /></div>
                   })
-                  // <div>Ratings: {record.ratings.length}</div>
                 ) : null}
                 <CardActions>
                   <Link href={`/movies/${record._id}`}>
