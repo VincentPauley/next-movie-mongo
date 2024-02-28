@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { Box, Button, Card, CardActions, CardContent, Chip, Pagination, Typography } from '@mui/material'
 
 import MovieTitleFilter from './MovieTitleFilter'
+import AppliedGenres from './AppliedGenres'
 
 export default function MovieList() {
   const [activePageIndex, setActivePageIndex] = useState(0)
@@ -35,28 +36,28 @@ export default function MovieList() {
   return (
     <div>
       <h2>Total Movies:</h2>
-      {/*
-      
-      TODOS:
-        [X] - movie movie list to a route
-        [X] - get pagination working
-        [X] - single movie page (folder with index)
-        [X] - single movie lookup and project on the global route
-        [X] - movie search & filter
-        [X] - delete movie
-        [ ] - Create exports for collection to ensure progress can be saved...
-      */}
 
       <Chip label={movies?.data?.totalRecords} />
 
       <MovieTitleFilter emitSearch={handleSearchSubmission}/>
+
+      {
+        searchString && (
+          <div>{movies?.data?.recordSet.length} results for "{searchString}"</div>
+        )
+      }
+
       <ul style={{padding: '1rem'}}>
         {movies?.data?.recordSet?.map(record => {
+
+          const { genres } = record
           return (
             <Card sx={{ marginBottom: '1rem', padding: '1rem' }} key={record._id}>
               <CardContent>
                 <Typography variant="h5">{record.title}</Typography>
                 <Typography variant="subtitle1">{record.year} {record.rated}</Typography>
+
+                <AppliedGenres genres={genres} />
                 {record.ratings.length ? (
 
                   record.ratings.map(rating => {

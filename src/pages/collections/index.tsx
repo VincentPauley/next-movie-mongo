@@ -11,10 +11,16 @@ const Collections = () => {
     enabled: false
   });
 
+  const exportMovieRecords = async() => {
+    const response = await refetch()
+
+    navigator.clipboard.writeText(JSON.stringify(response.data))
+  }
+
   return (
     <Container>
       <h3>Movie Collection</h3>
-      <Button onClick={() => refetch()}>Export</Button>
+      <Button variant="outlined" onClick={() => exportMovieRecords()}>Copy To Clipboard</Button>
     </Container>
   )
 }

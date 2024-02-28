@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '@/lib/dbConnect'
-// import Movie from '@/models/Movie'
+import Movie from '@/models/Movie'
 
 export default async function handler(
     req: NextApiRequest,
@@ -8,7 +8,9 @@ export default async function handler(
   ) {
     try {
       await dbConnect()
-      res.json({ message: 'received the export request.' })
+      const records = await Movie.find({})
+
+      res.json({ records })
     } catch (e) {
       console.error(e)
       res.status(500).json({ message: 'failed export' })
