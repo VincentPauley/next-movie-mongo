@@ -1,6 +1,8 @@
+import { useRef } from 'react'
+import { useRouter } from 'next/router'
 import { Container } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { Bar } from 'react-chartjs-2';
+import { Bar, getElementAtEvent } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -36,6 +38,9 @@ export const options = {
 import { MoviesByYear } from '@/services/stats'
 
 const MoviesByYearPage = () => {
+  const chartRef = useRef();
+  const router = useRouter();
+
   const { data: yearStats, isError, isLoading } = useQuery({ queryKey: ['MoviesByYear'], queryFn: () => MoviesByYear() });
 
   if (isLoading) {
@@ -53,10 +58,21 @@ const MoviesByYearPage = () => {
     }]
   }
 
+  const onClick = (event: any) => {
+    // console.log(event)
+    console.log(getElementAtEvent(chartRef.current, event)[0].index);
+
+    const clickedIndex = getElementAtEvent(chartRef.current, event)[0].index
+
+    console.log(yearStats.result[clickedIndex]._id)
+    
+    router.push('/movies/year/' + yearStats.result[clickedIndex]._id)
+  }
+
   return (
     <Container>
       movies by year...
-      <Bar options={options} data={data}/>
+      <Bar ref={chartRef} options={options} data={data} onClick={onClick}/>
     </Container>
   )
 }
