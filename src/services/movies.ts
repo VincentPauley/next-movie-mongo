@@ -1,3 +1,5 @@
+
+// TODO: switch to common export
 interface MovieRecord {
   _id: string;
   title: string;
@@ -26,6 +28,15 @@ export const GetMovies = (pageNumber = 0, searchString = '') => {
 export const GetMovie = (movieId: string) => {
   return new Promise<{ data: MovieRecord }>(async(resolve, reject) => {
     const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/' + movieId)
+    const record = await response.json()
+
+    resolve(record)
+  })
+}
+
+export const GetMoviesByYear = (year: string) => {
+  return new Promise<{ data: MovieRecord[] }>(async(resolve, reject) => {
+    const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/year/' + year)
     const record = await response.json()
 
     resolve(record)
