@@ -1,13 +1,12 @@
-import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { GetMovies } from '@/services/movies'
 import { useState } from 'react'
 
-import { Badge, Box, Button, Card, CardActions, CardContent, Chip, Pagination, Stack, Typography } from '@mui/material'
+import { Box, Chip, Pagination, } from '@mui/material'
 
 import MovieTitleFilter from './MovieTitleFilter'
-import AppliedGenres from './AppliedGenres'
-import MovieHeading from './MovieHeading'
+
+import MovieSearchResults from './MovieSearchResults'
 
 export default function MovieList() {
   const [activePageIndex, setActivePageIndex] = useState(0)
@@ -48,43 +47,8 @@ export default function MovieList() {
         )
       }
 
-      <ul style={{padding: '1rem'}}>
-        {movies?.data?.recordSet?.map(record => {
+      <MovieSearchResults movies={movies?.data?.recordSet ?? []}/>
 
-          const { title, year, genres, rated } = record
-          return (
-            <Card sx={{ marginBottom: '1rem', padding: '1rem' }} key={record._id}>
-              <CardContent>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                >
-                  <MovieHeading title={title} year={year}/>
-                  <Typography lineHeight={2.5}>{rated}</Typography>
-                </Stack>
-                
-                <AppliedGenres genres={genres} />
-                <Stack direction="row-reverse">
-                  {record.ratings.length ? (
-
-                    record.ratings.map(rating => {
-                      return (
-                        <div style={{ marginLeft: '1rem' }} key={record._id + rating.reviewer}>
-                          <Badge badgeContent={rating.rating} color="primary"><Chip label={rating.reviewer} /></Badge>
-                        </div>)
-                    })
-                  ) : null}
-                </Stack>
-                <CardActions>
-                  <Link href={`/movies/${record._id}`}>
-                    <Button>Inspect</Button>
-                  </Link>
-                </CardActions>
-              </CardContent>
-            </Card>
-          )
-        })}
-      </ul>
       <Box p={4} sx={{display: 'flex', justifyContent: 'space-around'}}>
         <Pagination
           count={movies?.data?.pages}

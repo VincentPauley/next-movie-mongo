@@ -59,12 +59,7 @@ const MoviesByYearPage = () => {
   }
 
   const onClick = (event: any) => {
-    // console.log(event)
-    console.log(getElementAtEvent(chartRef.current, event)[0].index);
-
-    const clickedIndex = getElementAtEvent(chartRef.current, event)[0].index
-
-    console.log(yearStats.result[clickedIndex]._id)
+    const clickedIndex = getElementAtEvent(chartRef.current as any, event)[0].index
     
     router.push('/movies/year/' + yearStats.result[clickedIndex]._id)
   }
