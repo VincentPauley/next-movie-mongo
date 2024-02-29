@@ -8,6 +8,9 @@ const NavigationMenu = () => {
           <Link href="/movies">Movie Search</Link>
         </ListItem>
         <ListItem>
+          <Link href="/movies/add">Add Movie</Link>
+        </ListItem>
+        <ListItem>
           <Link href="/stats/movies-by-year">Stats: movies by year</Link>
         </ListItem>
       </List>
