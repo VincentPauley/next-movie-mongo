@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useRouter } from 'next/router'
-import { Container } from '@mui/material'
+import { Card, Container } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { Bar, getElementAtEvent } from 'react-chartjs-2';
 import {
@@ -67,7 +67,9 @@ const MoviesByYearPage = () => {
   return (
     <Container>
       movies by year...
-      <Bar ref={chartRef} options={options} data={data} onClick={onClick}/>
+      <Card sx={{ padding: '1rem' }}>
+        <Bar ref={chartRef} options={options} data={data} onClick={onClick}/>
+      </Card>
     </Container>
   )
 }
