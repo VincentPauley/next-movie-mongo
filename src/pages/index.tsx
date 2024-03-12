@@ -1,7 +1,3 @@
-import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from '@tanstack/react-query'
-
-const queryClient = new QueryClient()
-
 import { Typography } from '@mui/material'
 // import hello from './api/hello'
 // ^ don't need to be importing here at all, just call the route dummy
@@ -54,11 +50,9 @@ export default function Home({ message }: HomePageProps) {
 
   return (
     <main>
-      {/* <QueryClientProvider client={queryClient}> */}
-        <Typography variant='h1'>Movies</Typography>
-        <MovieList/>
-        <GenreList/>
-      {/* </QueryClientProvider> */}
+      <Typography variant='h1'>Movies</Typography>
+      <MovieList/>
+      <GenreList/>
     </main>
   )
 }
