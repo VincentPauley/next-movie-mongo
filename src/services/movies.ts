@@ -43,6 +43,28 @@ export const GetMoviesByYear = (year: string) => {
   })
 }
 
+
+interface AddMovieParams {
+  title: string;
+  year: string;
+  rated: string;
+  genres: {name: string, level: number}[];
+}
+
+export const AddMovie = (params: AddMovieParams) => {
+  return new Promise<any>(async(resolve, reject) => {
+
+    const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movies/', { method: "POST", body: JSON.stringify(params) })
+
+    const result = await response.json();
+
+    console.log('Add Movie Result')
+    console.log({ result })
+
+    resolve(result)
+  })
+}
+
 export const DeleteMovie = (movieId: string) => {
   return new Promise<any>(async(resolve, reject) => {
     const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/' + movieId, { method: "DELETE", headers: {

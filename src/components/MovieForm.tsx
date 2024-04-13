@@ -1,26 +1,70 @@
 import { useForm, Controller } from 'react-hook-form'
-import { Box, Button, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, FormGroup, FormControlLabel, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { useQuery, useMutation } from '@tanstack/react-query'
+
+import { GetGenres } from '@/services/genres'
+import { AddMovie } from '@/services/movies'
+
+import GenreSelector from './GenreSelector';
 
 interface Inputs {
   title: string;
   year: string;
   rated: string;
+  genres: string[];
 }
 
+const Checkbox = (props) => (
+  <Controller
+    {...props}
+    render={({ field }) => {
+      // A third party component that requires Controller
+      return (
+        <input
+          {...field}
+          id={props.id}
+          type="checkbox"
+          value={props.value}
+          checked={field.value === props.value}
+          onChange={(event) => {
+            field.onChange(event.target.checked ? props.value : undefined);
+          }}
+        />
+      );
+    }}
+  />
+);
+
 const MovieForm = () => {
-  const {register, handleSubmit, formState: { errors }} = useForm<Inputs>();
+  const {register, handleSubmit, control, setValue, getValues, formState: { errors }} = useForm<Inputs>();
+  const { data: genres, isError, isLoading } = useQuery({ queryKey: ['genres'], queryFn: GetGenres })
+  const genreData = genres
 
-  const onSubmit = (data: Inputs) => {
-    const { title, year, rated } = data
+  const addMovie: any = useMutation({
+    mutationFn: (params: any) => AddMovie(params)
+  });
 
-    console.log({ title, year, rated })
+  const onSubmit = async(data: Inputs) => {
+    const { title, year, rated, genres } = data
+    const formattedGenres = genres.filter(g => g)
+    const minifiedSet: any[] = genreData?.data?.map(g => ({ name: g.name, level: g.level })) || []
+    const actual = minifiedSet.filter(genreOption => formattedGenres.includes(genreOption.name))
+
+    console.log({ title, year, rated, genres: actual })
+
+    try {
+      const resultOfAddition = await addMovie.mutate({ title, year, rated, genres: actual });
+
+      console.log({ resultOfAddition })
+    } catch (e) {
+      console.error(e)
+    }
+
+   
+
   }
 
   const onErrors = (errors: any) => console.error(errors)
-
-  // shar: y
-  // bridgette R: y
-  // brooke T: y
 
   // [X] - title: string;
   // [X] - year: number;
@@ -63,7 +107,7 @@ const MovieForm = () => {
             fullWidth
             label="Rated"
             defaultValue={''}
-            inputProps={register('rated', {required: 'Rated is required'})}
+            inputProps={register('rated', {required: 'Rated is requilightgray'})}
             helperText={errors?.rated ? errors.rated.message : null}
           >
             <MenuItem selected value="G">G</MenuItem>
@@ -73,8 +117,68 @@ const MovieForm = () => {
             <MenuItem value="U">Unrated</MenuItem>  
           </TextField>
         </Grid>
+
+        <Grid item xs={4}>
+          {genres?.data?.filter(g => g.level === 1).map((genre, index) => {
+            return (
+              <li
+                style={{
+                  listStyleType: 'none',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  padding: '.25rem',
+                  borderBottom: '2px solid lightgray'
+                }}
+              >
+                <label htmlFor={genre.name}>{genre.name}</label>
+                <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
+              </li>
+            )
+          })}
+        </Grid>
+
+        <Grid item xs={4}>
+          {genres?.data?.filter(g => g.level === 2).map((genre, index) => {
+            return (
+              <li
+                style={{
+                  listStyleType: 'none',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  padding: '.25rem',
+                  borderBottom: '2px solid lightgray'
+                }}
+              >
+                <label htmlFor={genre.name}>{genre.name}</label>
+                <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
+              </li>
+            )
+          })}
+        </Grid>
+
+        <Grid item xs={4}>
+          {genres?.data?.filter(g => g.level === 3).map((genre, index) => {
+            return (
+              <li
+                style={{
+                  listStyleType: 'none',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  padding: '.25rem',
+                  borderBottom: '2px solid lightgray'
+                }}
+              >
+                <label htmlFor={genre.name}>{genre.name}</label>
+                <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
+              </li>
+            )
+          })}
+        </Grid>
       </Grid>
-      
+
       <Box>
         <Button variant="outlined">Clear</Button>
         <Button type="submit" variant="outlined">Submit</Button>

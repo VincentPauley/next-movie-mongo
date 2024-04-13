@@ -10,6 +10,9 @@ that year (tooltip should reveal how many.)
 [ ] - synopsis editor
 [ ] - movie review/discussion analysis.
 
+[ ] - changelog collection that tracks recent updates
+[ ] - active user in the application.
+
 Bugs
 
 [ ] - clicking off a bar in the chart causes a crash
