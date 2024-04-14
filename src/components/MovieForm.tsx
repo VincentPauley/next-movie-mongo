@@ -1,6 +1,7 @@
 import { useForm, Controller } from 'react-hook-form'
-import { Box, Button, FormGroup, FormControlLabel, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, Modal, Link, Snackbar, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { useQuery, useMutation } from '@tanstack/react-query'
+import { useState } from 'react'
 
 import { GetGenres } from '@/services/genres'
 import { AddMovie } from '@/services/movies'
@@ -39,9 +40,25 @@ const MovieForm = () => {
   const {register, handleSubmit, control, setValue, getValues, formState: { errors }} = useForm<Inputs>();
   const { data: genres, isError, isLoading } = useQuery({ queryKey: ['genres'], queryFn: GetGenres })
   const genreData = genres
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [createdId, setCreatedId] = useState('');
 
   const addMovie: any = useMutation({
-    mutationFn: (params: any) => AddMovie(params)
+    mutationFn: (params: any) => AddMovie(params),
+    onSuccess: (data: any) => {
+      console.log('--- Add Movie Success: ', data.id)
+
+      setCreatedId(data.id)
+
+
+      // /movies/661b1f518b52ca120b8fe40a
+
+      setSnackbarOpen(true);
+
+      setTimeout(() => {
+        setSnackbarOpen(false);
+      }, 3000)
+    }
   });
 
   const onSubmit = async(data: Inputs) => {
@@ -50,26 +67,34 @@ const MovieForm = () => {
     const minifiedSet: any[] = genreData?.data?.map(g => ({ name: g.name, level: g.level })) || []
     const actual = minifiedSet.filter(genreOption => formattedGenres.includes(genreOption.name))
 
-    console.log({ title, year, rated, genres: actual })
-
     try {
-      const resultOfAddition = await addMovie.mutate({ title, year, rated, genres: actual });
+      addMovie.mutate({ title, year, rated, genres: actual });
+      // const resultOfAddition = await addMovie.mutate({ title, year, rated, genres: actual });
 
-      console.log({ resultOfAddition })
+      // console.log({ resultOfAddition })
     } catch (e) {
       console.error(e)
     }
-
-   
-
   }
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
   const onErrors = (errors: any) => console.error(errors)
 
   // [X] - title: string;
   // [X] - year: number;
   // [X] - rated: string;
-  // [ ] - genres: [
+  // [X] - genres: [
   //      { level: number, name: string }
   //    ];
   // [ ] - ratings: [
@@ -178,6 +203,28 @@ const MovieForm = () => {
           })}
         </Grid>
       </Grid>
+
+      { addMovie.isLoading && (
+        <div>Saving Movie...</div>
+      )}
+
+      { addMovie.isError && (
+        <div>There was an error saving movie</div>
+      )}
+
+      <Modal
+        open={snackbarOpen}
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Movie Added!
+          </Typography>
+          <Link href={`/movies/${createdId}`}>
+            <Button>Inspect</Button>
+          </Link>
+        </Box>
+        
+      </Modal>
 
       <Box>
         <Button variant="outlined">Clear</Button>

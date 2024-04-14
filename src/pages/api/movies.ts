@@ -30,7 +30,7 @@ export default async function handler(
           seasonality,
           directors
         })
-        res.json({ message: 'Created: ' + result.id })
+        res.json({ message: 'Successful Create', id: result.id })
       }
     }
 
