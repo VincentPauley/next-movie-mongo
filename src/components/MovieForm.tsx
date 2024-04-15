@@ -1,5 +1,5 @@
 import { useForm, Controller } from 'react-hook-form'
-import { Box, Button, Modal, Link, Snackbar, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Modal, Link, Snackbar, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 
@@ -19,7 +19,7 @@ const Checkbox = (props) => (
   <Controller
     {...props}
     render={({ field }) => {
-      // A third party component that requires Controller
+
       return (
         <input
           {...field}
@@ -38,7 +38,8 @@ const Checkbox = (props) => (
 
 const MovieForm = () => {
   const {register, handleSubmit, control, setValue, getValues, formState: { errors }} = useForm<Inputs>();
-  const { data: genres, isError, isLoading } = useQuery({ queryKey: ['genres'], queryFn: GetGenres })
+  const { data: genres, isError, isLoading } = useQuery({ queryKey: ['genres'], queryFn: GetGenres });
+
   const genreData = genres
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [createdId, setCreatedId] = useState('');
@@ -46,13 +47,7 @@ const MovieForm = () => {
   const addMovie: any = useMutation({
     mutationFn: (params: any) => AddMovie(params),
     onSuccess: (data: any) => {
-      console.log('--- Add Movie Success: ', data.id)
-
       setCreatedId(data.id)
-
-
-      // /movies/661b1f518b52ca120b8fe40a
-
       setSnackbarOpen(true);
 
       setTimeout(() => {
@@ -69,9 +64,6 @@ const MovieForm = () => {
 
     try {
       addMovie.mutate({ title, year, rated, genres: actual });
-      // const resultOfAddition = await addMovie.mutate({ title, year, rated, genres: actual });
-
-      // console.log({ resultOfAddition })
     } catch (e) {
       console.error(e)
     }
@@ -104,134 +96,142 @@ const MovieForm = () => {
   // [ ] - seasonality: string[],
   // [ ] - directors: string[]
 
+  // make it easier/quicker to add movies:
+  // title & year search for existing movies that match so you
+  // don't need to go back and forth between pages
+
   return (
-    <form onSubmit={handleSubmit(onSubmit, onErrors)}>
-      <Typography variant="h4">New Movie</Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <TextField
-            fullWidth
-            {...register('title', { required: "Title is required" })}
-            label="Title"
-            name="title"
-            helperText={errors?.title ? errors.title.message : null}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            fullWidth
-            {...register('year', { required: "Year is required", pattern: { value: /[0-9]{4}/, message: 'Invalid Year' } })}
-            label="Year"
-            name="year"
-            helperText={errors?.year ? errors.year.message : null}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            select
-            fullWidth
-            label="Rated"
-            defaultValue={''}
-            inputProps={register('rated', {required: 'Rated is requilightgray'})}
-            helperText={errors?.rated ? errors.rated.message : null}
-          >
-            <MenuItem selected value="G">G</MenuItem>
-            <MenuItem value="PG">PG</MenuItem>
-            <MenuItem value="PG-13">PG-13</MenuItem>
-            <MenuItem value="R">R</MenuItem>
-            <MenuItem value="U">Unrated</MenuItem>  
-          </TextField>
+    <Container maxWidth='md'>
+      <form onSubmit={handleSubmit(onSubmit, onErrors)}>
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <TextField
+              fullWidth
+              {...register('title', { required: "Title is required" })}
+              label="Title"
+              name="title"
+              helperText={errors?.title ? errors.title.message : null}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <TextField
+              fullWidth
+              {...register('year', { required: "Year is required", pattern: { value: /[0-9]{4}/, message: 'Invalid Year' } })}
+              label="Year"
+              name="year"
+              helperText={errors?.year ? errors.year.message : null}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <TextField
+              select
+              fullWidth
+              label="Rated"
+              defaultValue={''}
+              inputProps={register('rated', {required: 'Rated is requilightgray'})}
+              helperText={errors?.rated ? errors.rated.message : null}
+            >
+              <MenuItem selected value="G">G</MenuItem>
+              <MenuItem value="PG">PG</MenuItem>
+              <MenuItem value="PG-13">PG-13</MenuItem>
+              <MenuItem value="R">R</MenuItem>
+              <MenuItem value="U">Unrated</MenuItem>  
+            </TextField>
+          </Grid>
+
+          <Grid item xs={4}>
+            {genres?.data?.filter(g => g.level === 1).map((genre, index) => {
+              return (
+                <li
+                  key={genre.name}
+                  style={{
+                    listStyleType: 'none',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '.25rem',
+                    borderBottom: '2px solid lightgray'
+                  }}
+                >
+                  <label htmlFor={genre.name}>{genre.name}</label>
+                  <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
+                </li>
+              )
+            })}
+          </Grid>
+
+          <Grid item xs={4}>
+            {genres?.data?.filter(g => g.level === 2).map((genre, index) => {
+              return (
+                <li
+                  key={genre.name}
+                  style={{
+                    listStyleType: 'none',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '.25rem',
+                    borderBottom: '2px solid lightgray'
+                  }}
+                >
+                  <label htmlFor={genre.name}>{genre.name}</label>
+                  <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
+                </li>
+              )
+            })}
+          </Grid>
+
+          <Grid item xs={4}>
+            {genres?.data?.filter(g => g.level === 3).map((genre, index) => {
+              return (
+                <li
+                  key={genre.name}
+                  style={{
+                    listStyleType: 'none',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '.25rem',
+                    borderBottom: '2px solid lightgray'
+                  }}
+                >
+                  <label htmlFor={genre.name}>{genre.name}</label>
+                  <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
+                </li>
+              )
+            })}
+          </Grid>
         </Grid>
 
-        <Grid item xs={4}>
-          {genres?.data?.filter(g => g.level === 1).map((genre, index) => {
-            return (
-              <li
-                style={{
-                  listStyleType: 'none',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  padding: '.25rem',
-                  borderBottom: '2px solid lightgray'
-                }}
-              >
-                <label htmlFor={genre.name}>{genre.name}</label>
-                <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
-              </li>
-            )
-          })}
-        </Grid>
+        { addMovie.isLoading && (
+          <div>Saving Movie...</div>
+        )}
 
-        <Grid item xs={4}>
-          {genres?.data?.filter(g => g.level === 2).map((genre, index) => {
-            return (
-              <li
-                style={{
-                  listStyleType: 'none',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  padding: '.25rem',
-                  borderBottom: '2px solid lightgray'
-                }}
-              >
-                <label htmlFor={genre.name}>{genre.name}</label>
-                <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
-              </li>
-            )
-          })}
-        </Grid>
+        { addMovie.isError && (
+          <div>There was an error saving movie</div>
+        )}
 
-        <Grid item xs={4}>
-          {genres?.data?.filter(g => g.level === 3).map((genre, index) => {
-            return (
-              <li
-                style={{
-                  listStyleType: 'none',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  padding: '.25rem',
-                  borderBottom: '2px solid lightgray'
-                }}
-              >
-                <label htmlFor={genre.name}>{genre.name}</label>
-                <Checkbox id={genre.name} control={control} value={genre.name} name={`genres[${index}]`}/>
-              </li>
-            )
-          })}
-        </Grid>
-      </Grid>
+        <Modal
+          open={snackbarOpen}
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Movie Added!
+            </Typography>
+            <Link href={`/movies/${createdId}`}>
+              <Button>Inspect</Button>
+            </Link>
+          </Box>
+          
+        </Modal>
 
-      { addMovie.isLoading && (
-        <div>Saving Movie...</div>
-      )}
-
-      { addMovie.isError && (
-        <div>There was an error saving movie</div>
-      )}
-
-      <Modal
-        open={snackbarOpen}
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Movie Added!
-          </Typography>
-          <Link href={`/movies/${createdId}`}>
-            <Button>Inspect</Button>
-          </Link>
+        <Box>
+          <Button variant="outlined">Clear</Button>
+          <Button type="submit" variant="outlined">Submit</Button>
         </Box>
-        
-      </Modal>
 
-      <Box>
-        <Button variant="outlined">Clear</Button>
-        <Button type="submit" variant="outlined">Submit</Button>
-      </Box>
-
-    </form>
+      </form>
+    </Container>
   );
 }
 

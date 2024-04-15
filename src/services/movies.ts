@@ -16,6 +16,15 @@ interface MovieRecord {
   directors: string[];
 }
 
+export const GetMovieCount = () => {
+  return new Promise<{data: { totalMovies: number }}>(async(resolve, reject) => {
+    const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie-count');
+    const records = await response.json()
+
+    resolve(records)
+  })
+}
+
 export const GetMovies = (pageNumber = 0, searchString = '') => {
   return new Promise<{ data:{ recordSet: MovieRecord[], totalRecords: number, pages: number} }>(async(resolve, reject) => {
     const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + `/api/movies/?page=${pageNumber}&searchString=${searchString}`)
