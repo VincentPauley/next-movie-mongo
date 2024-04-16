@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import NavigationMenu from '@/components/NavigationMenu';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
@@ -14,10 +16,17 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Button onClick={() => toggleDrawerOpen(true)}>Menu</Button>
-      <Drawer open={drawerOpen} onClose={() => toggleDrawerOpen(false)}>
-        <NavigationMenu/>
-      </Drawer>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Button sx={{color: 'white'}} variant="outlined" onClick={() => toggleDrawerOpen(true)}>Menu</Button>
+            <Drawer open={drawerOpen} onClose={() => toggleDrawerOpen(false)}>
+              <NavigationMenu/>
+            </Drawer>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      
       <Component {...pageProps} />
     </QueryClientProvider>
   ); 
