@@ -1,12 +1,19 @@
 import { useForm, Controller } from 'react-hook-form'
 import { Box, Button, Container, Modal, Link, Snackbar, Grid, MenuItem, TextField, Typography } from "@mui/material";
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 
 import { GetGenres } from '@/services/genres'
 import { AddMovie } from '@/services/movies'
 
 import GenreSelector from './GenreSelector';
+
+import {queryClient } from '@/pages/_app'
+
+// import { useQuery, useQueryClient } from '@tanstack/react-query'
+
+// Get QueryClient from the context
+// const queryClient = useQueryClient()
 
 interface Inputs {
   title: string;
@@ -49,6 +56,8 @@ const MovieForm = () => {
     onSuccess: (data: any) => {
       setCreatedId(data.id)
       setSnackbarOpen(true);
+
+      queryClient.invalidateQueries({ queryKey: ['movieCount'] })
 
       setTimeout(() => {
         setSnackbarOpen(false);

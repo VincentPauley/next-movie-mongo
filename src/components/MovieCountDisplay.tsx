@@ -10,7 +10,7 @@ const MovieCountDisplay = () => {
   const { data: movieCount } = useQuery({ queryKey: ['movieCount'], queryFn: GetMovieCount })
 
   return (
-    <Chip label={movieCount?.data?.totalMovies}/>
+    <Chip color="success" label={movieCount?.data?.totalMovies}/>
   )
 }
 

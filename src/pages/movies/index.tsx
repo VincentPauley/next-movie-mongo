@@ -1,12 +1,12 @@
-import { Typography } from '@mui/material'
+import { Container, Typography } from '@mui/material'
 
 import MovieList from '@/components/MovieList'
 
 export default function MoviesPage() {
   return (
-    <div>
-      <Typography variant='h1'>Movies Page</Typography>
+    <Container maxWidth="md">
+      <Typography variant='h2'>Movie Search</Typography>
       <MovieList/>
-    </div>
+    </Container>
   )
 }

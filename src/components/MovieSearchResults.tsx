@@ -4,13 +4,7 @@ import MovieHeading from './MovieHeading';
 import MovieRecord from '@/interfaces/MovieRecord';
 import AppliedGenres from './AppliedGenres';
 import ReviewChip from './ReviewChip'
-/**
- * 
- * This should take an input of MovieRecord[] and render a list of results to user.  This
- * can be used in Conjunction with pagination but does not control pagination itself.
- * 
- * 
- */
+
 const MovieSearchResults = ({ movies = [] }: { movies: MovieRecord[] }) => {
   return (
     <Container>

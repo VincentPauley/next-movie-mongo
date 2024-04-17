@@ -1,6 +1,5 @@
 import { Container, Box, Typography } from '@mui/material'
 
-import MovieCountDisplay from '@/components/MovieCountDisplay'
 import MovieForm from '@/components/MovieForm'
 
 const AddMovie = () => {
@@ -18,7 +17,6 @@ const AddMovie = () => {
             marginRight: '.5rem'
           }}
         >Add Movie</Typography>
-        <MovieCountDisplay/>
       </Box>
       <MovieForm/>
     </Container>

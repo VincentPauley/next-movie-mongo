@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { GetMovies } from '@/services/movies'
 import { useState } from 'react'
 
-import { Box, Chip, Pagination, } from '@mui/material'
+import { Box, Pagination } from '@mui/material'
 
 import MovieTitleFilter from './MovieTitleFilter'
 
@@ -34,11 +34,7 @@ export default function MovieList() {
   }
 
   return (
-    <div>
-      <h2>Total Movies:</h2>
-
-      <Chip label={movies?.data?.totalRecords} />
-
+    <>
       <MovieTitleFilter emitSearch={handleSearchSubmission}/>
 
       {
@@ -49,7 +45,7 @@ export default function MovieList() {
 
       <MovieSearchResults movies={movies?.data?.recordSet ?? []}/>
 
-      <Box p={4} sx={{display: 'flex', justifyContent: 'space-around'}}>
+      <Box p={2} sx={{display: 'flex', justifyContent: 'space-around'}}>
         <Pagination
           count={movies?.data?.pages}
           shape="rounded"
@@ -57,6 +53,6 @@ export default function MovieList() {
           onChange={(e, value) => handlePageChange(value)}
         />
       </Box>
-    </div>
+    </>
   );
 }
