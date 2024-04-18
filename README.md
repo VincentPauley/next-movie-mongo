@@ -15,6 +15,7 @@ a common component for it or some way to access it globally.
 
 [ ] - changelog collection that tracks recent updates
 [ ] - active user in the application.
+[ ] - /movies/<no match> needs to indicate no movie was found by that name
 
 Bugs
 

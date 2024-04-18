@@ -3,6 +3,8 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import { GetMovie, DeleteMovie } from '@/services/movies'
 import { Box, Button, Container, Typography } from '@mui/material'
 
+import RateMovieForm from '@/components/RateMovieForm'
+
 export default function SingleMoviePage() {
   const router = useRouter()
 
@@ -28,8 +30,11 @@ export default function SingleMoviePage() {
       movie?.data && <Typography variant="h3">{movie?.data?.title}, {movie?.data?.year} </Typography>
     }
 
+    {movie?.data && <RateMovieForm movie={movie?.data} />}
+    
     <Box sx={{border: '1px solid black', padding: '1rem', marginTop: '1rem'}}>
       <Typography variant="h5" sx={{ marginBottom: '1rem'}}>Movie Actions</Typography>
+      
       <Button color="error" variant="outlined" onClick={() => deleteMovie.mutate()}>Delete</Button>
     </Box>
     
