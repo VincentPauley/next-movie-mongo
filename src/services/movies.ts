@@ -74,6 +74,20 @@ export const AddMovie = (params: AddMovieParams) => {
   })
 }
 
+export const UpdateMovie = (movie: MovieRecord) => {
+  console.log('...calling Services/UpdateMovie: ', movie)
+  return new Promise<any>(async(resolve, reject) => {
+    const route = process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/' + movie._id
+    // console.log()
+
+    const response = await fetch(route, { method: "PUT", body: JSON.stringify({ movie }) })
+
+    const result = await response.json()
+
+    resolve(result)
+  })
+}
+
 export const DeleteMovie = (movieId: string) => {
   return new Promise<any>(async(resolve, reject) => {
     const response = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/api/movie/' + movieId, { method: "DELETE", headers: {

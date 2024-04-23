@@ -1,7 +1,11 @@
 import { Box, Grid, Typography, TextField, MenuItem } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query'
 
 import MovieRecord from '@/interfaces/MovieRecord';
+import { UpdateMovie } from '@/services/movies';
+import { LensTwoTone } from '@mui/icons-material';
+// ^ now can tie the call to a tanstack mutation
 
 type FormValues = {
   vinnierating: string;
@@ -18,21 +22,46 @@ export default function RateMovieForm({ movie }: { movie: MovieRecord }) {
 
   const { register, handleSubmit } = form
 
+  // const addMovie: any = useMutation({
+  //   mutationFn: (params: any) => AddMovie(params),
+  //   onSuccess: (data: any) => {
+  //     setCreatedId(data.id)
+  //     setSnackbarOpen(true);
+
+  //     queryClient.invalidateQueries({ queryKey: ['movieCount'] })
+
+  //     setTimeout(() => {
+  //       setSnackbarOpen(false);
+  //     }, 3000)
+  //   }
+  // });
+
+  const updateMovie: any = useMutation({
+    mutationFn: (params: any) => UpdateMovie(params),
+    onError: (e: any) => {
+      console.log('update movie error: ', e)
+    }
+  })
+
   const onSubmit = (fields: FormValues) => {
     const { vinnierating, hollyrating } = fields
-    const reviews = [];
+    const ratings = [];
 
     if (vinnierating) {
-      reviews.push({ reviewer: 'vinnie', rating: parseInt(vinnierating)})
+      ratings.push({ reviewer: 'vinnie', rating: parseInt(vinnierating)})
     }
 
     if (hollyrating) {
-      reviews.push({ reviewer: 'holly', rating: parseInt(hollyrating) })
+      ratings.push({ reviewer: 'holly', rating: parseInt(hollyrating) })
     }
 
-    console.log('next step, update the record into the DB.')
-    console.log({ ...movie, reviews })
+    updateMovie.mutate({ ...movie, ratings })
+
+    // console.log('next step, update the record into the DB.')
+    // console.log({ ...movie, reviews })
   }
+  // 6627b9b878a5199e83efa84a
+  // 6627b9b878a5199e83efa84a
 
   return (
     <Box>
@@ -78,8 +107,8 @@ export default function RateMovieForm({ movie }: { movie: MovieRecord }) {
             </TextField>
           </Grid>
         </Grid>
-         
-        <button>Submit</button>
+
+        <button>Submit Rating(s)</button>
       </form>
     </Box>
   );
