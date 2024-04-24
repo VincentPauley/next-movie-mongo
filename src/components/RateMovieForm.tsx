@@ -4,8 +4,6 @@ import { useMutation } from '@tanstack/react-query'
 
 import MovieRecord from '@/interfaces/MovieRecord';
 import { UpdateMovie } from '@/services/movies';
-import { LensTwoTone } from '@mui/icons-material';
-// ^ now can tie the call to a tanstack mutation
 
 type FormValues = {
   vinnierating: string;
@@ -22,22 +20,11 @@ export default function RateMovieForm({ movie }: { movie: MovieRecord }) {
 
   const { register, handleSubmit } = form
 
-  // const addMovie: any = useMutation({
-  //   mutationFn: (params: any) => AddMovie(params),
-  //   onSuccess: (data: any) => {
-  //     setCreatedId(data.id)
-  //     setSnackbarOpen(true);
-
-  //     queryClient.invalidateQueries({ queryKey: ['movieCount'] })
-
-  //     setTimeout(() => {
-  //       setSnackbarOpen(false);
-  //     }, 3000)
-  //   }
-  // });
-
   const updateMovie: any = useMutation({
     mutationFn: (params: any) => UpdateMovie(params),
+    onSuccess: () => {
+      console.log('Updated Movie!')
+    },
     onError: (e: any) => {
       console.log('update movie error: ', e)
     }
@@ -56,12 +43,7 @@ export default function RateMovieForm({ movie }: { movie: MovieRecord }) {
     }
 
     updateMovie.mutate({ ...movie, ratings })
-
-    // console.log('next step, update the record into the DB.')
-    // console.log({ ...movie, reviews })
   }
-  // 6627b9b878a5199e83efa84a
-  // 6627b9b878a5199e83efa84a
 
   return (
     <Box>
