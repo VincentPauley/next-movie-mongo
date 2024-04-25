@@ -24,6 +24,9 @@ Initialize docker container and volume
 docker compose up
 ```
 
+NOTE: this will keep the container running in the terminal, you could add -d to run the container in detached mode
+or just exit the process and restart the container from *Docker Desktop*.
+
 Features
 
 [X] - header/nav
