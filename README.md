@@ -1,3 +1,29 @@
+# Next Movie Mongo
+
+CRUD application for managing a mongo database for movies. Built in
+Next JS.
+
+## Setup
+
+### Required Software
+
+- Docker
+- NodeJS/NPM
+
+### Run the Project
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Initialize docker container and volume
+
+```bash
+docker compose up
+```
+
 Features
 
 [X] - header/nav
