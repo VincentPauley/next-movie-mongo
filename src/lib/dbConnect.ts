@@ -23,15 +23,12 @@ async function dbConnect() {
   }
   if (!cached.promise) {
     const opts = {
-  
-
-      // poolSize: 10,
-            authSource: "admin",
-            user: "mongoadmin",
-            pass: "pleaseworkey", 
-            // useCreateIndex: true,
-            // useNewUrlParser: true,
-            // useUnifiedTopology: true
+      authSource: "admin",
+      user: process.env.MONGO_ROOT_USERNAME,
+      pass: process.env.MONGO_ROOT_PASSWORD 
+      // useCreateIndex: true,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {

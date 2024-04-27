@@ -24,6 +24,49 @@ Initialize docker container and volume
 docker compose up
 ```
 
+Access local mongo database through shell, use docker ps to find the container
+ID and use the values from docker compose for authentication
+
+```bash
+docker exec -it <Container-ID> mongosh  -u MONGO_INITDB_ROOT_USERNAME -p MONGO_INITDB_ROOT_PASSWORD
+```
+
+```bash
+docker exec -it a4a5de2ddb5e mongosh -u mongoadmin -p pleaseworkey
+```
+
+Helpful Mongo Shell Commands
+
+```bash
+# exit shell
+quit()
+```
+
+```bash
+# list all databases
+show dbs
+```
+
+```bash
+# switch to specific database
+use <db>
+```
+
+```bash
+# list all collections in current database
+db.getCollectionNames()
+```
+
+```bash
+# find documents in Movie collection
+db.movies.find({})
+```
+
+```bash
+# query movies by title
+db.movies.find({ title: 'Whiplash' })
+```
+
 Features
 
 [X] - header/nav
