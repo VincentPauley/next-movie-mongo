@@ -31,6 +31,9 @@ ID and use the values from docker compose for authentication
 docker exec -it <Container-ID> mongosh  -u MONGO_INITDB_ROOT_USERNAME -p MONGO_INITDB_ROOT_PASSWORD
 ```
 
+NOTE: this will keep the container running in the terminal, you could add -d to run the container in detached mode
+or just exit the process and restart the container from _Docker Desktop_.
+
 ```bash
 docker exec -it a4a5de2ddb5e mongosh -u mongoadmin -p pleaseworkey
 ```
